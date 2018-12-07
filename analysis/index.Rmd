@@ -7,3 +7,5 @@ output:
 ---
 
 This site is to document exploratory work on Portal body size distributions. 
+
+See the initial plot [here](plot_distributions.html). 

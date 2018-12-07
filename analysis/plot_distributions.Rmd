@@ -1,0 +1,44 @@
+---
+title: "Plot size distributions across time for all sites"
+author: "Kristina Riemer"
+output: workflowr::wflow_html
+---
+
+This generates the initial plot of body size distributions across time at Portal. 
+
+First read in necessary libraries. 
+```{r}
+library(dplyr)
+library(ggplot2)
+library(cowplot)
+```
+
+Then read in the body size data that has already been cleaned and subsets to only Portal data. 
+```{r}
+occurrences_path = "data/occurrences.csv"
+occurrences = read.csv(occurrences_path)
+occurrences = filter(occurrences, site == "portal")
+```
+
+This is the function to create the plot. 
+```{r}
+plot_size_distributions = function(site_data){
+  size_hist = ggplot(site_data, aes(x = mass_mean)) +
+    geom_histogram() +
+    scale_x_log10() +
+    labs(x = "Mean species size", y = "Number of species") +
+    facet_wrap(~yr)
+  size_density = ggplot(site_data, aes(x = mass_mean)) +
+    geom_density() +
+    scale_x_log10() +
+    labs(x = "Mean species size", y = "Density of species") +
+    facet_wrap(~yr)
+  size_both = plot_grid(size_hist, size_density)
+  return(size_both)
+}
+```
+
+This creates the plot. 
+```{r}
+plot_size_distributions(occurrences)
+```
